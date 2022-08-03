@@ -18,7 +18,13 @@ Run this command to setup terraform locally
 
 `terraform init`
 
-Update the access_key and secret_key values in the uploadToBucket.tf file (We can make this easier in future)
+Create a file called `.env` to hold your AWS access keys. This should be a json file with the following content:
+```
+{ 
+  "access_key":  "### INSERT ACCESS KEY HERE###",
+  "secret_key":  "### INSERT SECRET KEY HERE###"
+}
+```
 
 Run the following command to see what terraform will do:
 
