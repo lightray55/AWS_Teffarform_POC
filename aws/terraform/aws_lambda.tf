@@ -15,8 +15,10 @@ resource "aws_lambda_function" "create-incident" {
  timeout = 10
  runtime = "nodejs14.x"
  architectures = ["arm64"]
- handler = "nodejs/backend/index.handler"
+ handler = "index.handler"
  function_name = "create-incident"
  role = aws_iam_role.iam_for_lambda.arn
  filename = "nodejs/backend/index.zip"
+ publish = false
+ source_code_hash = filebase64sha256("nodejs/backend/index.zip")
 }

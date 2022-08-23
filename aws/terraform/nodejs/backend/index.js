@@ -4,20 +4,20 @@ const INCIDENT_TABLE = "tf-incident-table"; // obtaining the table name
 const documentClient = new AWS.DynamoDB.DocumentClient();
 
 module.exports.handler = async (event, context) => {
-   // create a new object
-  currentDate = Date.now();
-  expiryDate = currentDate.setDate(currentDate.getDate() + 7)
+
+  // create a new object
+  expiryDate = Date.now() + 604800000; //This magic number is 7 days in milliseconds
   const body = event.body;var newIncident = {
     ...body,
-    incidentId: Date.now(),
+    incidentId: Date.now().toString(),
     expiryPeriod: expiryDate, // specify TTL
   };
   
   // check that the password is correct
-  if(event.body.password == "MattAndDansSuperSecretPassword") {
+  if(event.hasOwnProperty('body') && event.body.hasOwnProperty('password') && event.body.password == "MattAndDansSuperSecretPassword") {
     //remove the password from the object so we don't store it in the database
     delete newIncident.password
-    
+
     // insert the new incident into the table
     await documentClient
     .put({
@@ -27,7 +27,7 @@ module.exports.handler = async (event, context) => {
     .promise();
         
     // return the created object
-    return {statusCode: 200,body: JSON.stringify(newNote), 
+    return {statusCode: 200,body: JSON.stringify(newIncident), 
     };
   } else {
     // if password is incorrect - return error
