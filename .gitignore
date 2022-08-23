@@ -3,3 +3,6 @@
 
 # Local environment variables
 **/.env
+
+# Local zip files
+**/*.zip
