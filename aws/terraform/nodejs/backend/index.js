@@ -5,16 +5,18 @@ const documentClient = new AWS.DynamoDB.DocumentClient();
 
 module.exports.handler = async (event, context) => {
 
-  // create a new object
-  expiryDate = Date.now() + 604800000; //This magic number is 7 days in milliseconds
-  const body = event.body;var newIncident = {
-    ...body,
-    incidentId: Date.now().toString(),
-    expiryPeriod: expiryDate, // specify TTL
-  };
-  
   // check that the password is correct
   if(event.hasOwnProperty('body') && event.body.hasOwnProperty('password') && event.body.password == "MattAndDansSuperSecretPassword") {
+
+    // create a new object
+    expiryDate = Date.now() + 604800000; //This magic number is 7 days in milliseconds
+    
+    var newIncident = {
+      ...event.body,
+      incidentId: Date.now().toString(),
+      expiryPeriod: expiryDate, // specify TTL
+    };
+
     //remove the password from the object so we don't store it in the database
     delete newIncident.password
 
@@ -31,6 +33,6 @@ module.exports.handler = async (event, context) => {
     };
   } else {
     // if password is incorrect - return error
-    return {statusCode: 500,body: '{"error":"Invalid Password"}'} 
+    return {statusCode: 500,body: '{"error":"Invalid Request"}'} 
   }
 };
