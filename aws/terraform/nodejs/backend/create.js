@@ -5,21 +5,8 @@ const documentClient = new AWS.DynamoDB.DocumentClient();
 
 module.exports.handler = async (event, context) => {
 
-  // check that the password is correct
-  if(event.body.hasOwnProperty('incidentId')) {
-    const id = event.body.incidentId;
-    await documentClient
-      .delete({
-        TableName: INCIDENT_TABLE,
-        Key: {
-          incidentId: id,
-        },
-      }).promise();
-         
-    return {
-      statusCode: 200,
-      body: JSON.stringify({ message: "Item Deleted" })};
-  } else if (event.hasOwnProperty('body') && event.body.hasOwnProperty('password') && event.body.password == "MattAndDansSuperSecretPassword") {
+// check that the password is correct
+if (event.hasOwnProperty('body') && event.body.hasOwnProperty('password') && event.body.password == "MattAndDansSuperSecretPassword") {
 
     // create a new object
     expiryDate = Date.now() + 604800000; //This magic number is 7 days in milliseconds
