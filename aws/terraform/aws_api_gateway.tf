@@ -31,7 +31,7 @@ resource "aws_apigatewayv2_stage" "lambda_stage" {
 resource "aws_apigatewayv2_integration" "create" {
   api_id = aws_apigatewayv2_api.lambda_gateway.id
 
-  integration_uri    = aws_lambda_function.create-incident.invoke_arn
+  integration_uri    = aws_lambda_function.create_incident.invoke_arn
   integration_type   = "AWS_PROXY"
   integration_method = "POST"
 }
@@ -52,7 +52,7 @@ resource "aws_cloudwatch_log_group" "api_log_group" {
 resource "aws_lambda_permission" "api_permission" {
   statement_id  = "AllowExecutionFromAPIGateway"
   action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.create-incident.function_name
+  function_name = aws_lambda_function.create_incident.function_name
   principal     = "apigateway.amazonaws.com"
 
   source_arn = "${aws_apigatewayv2_api.lambda_gateway.execution_arn}/*/*"
