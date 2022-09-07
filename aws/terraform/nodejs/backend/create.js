@@ -1,3 +1,4 @@
+const util = require('util') // Useful functions
 const AWS = require("aws-sdk"); // using the SDK
 const INCIDENT_TABLE = "tf-incident-table"; // obtaining the table name
 
@@ -5,14 +6,20 @@ const documentClient = new AWS.DynamoDB.DocumentClient();
 
 module.exports.handler = async (event, context) => {
 
-  // check that the password is correct
-  if(event.hasOwnProperty('body') && event.body.hasOwnProperty('password') && event.body.password == "MattAndDansSuperSecretPassword") {
+// check that the password is correct
+if (event.hasOwnProperty('body')) {
+    var jsonBody = event.body
+    if(event.body.constructor == String) {
+      jsonBody = JSON.parse(event.body)
+    }
+    
+    if(jsonBody.hasOwnProperty('password') && jsonBody.password == "MattAndDansSuperSecretPassword") {
 
     // create a new object
     expiryDate = Date.now() + 604800000; //This magic number is 7 days in milliseconds
     
     var newIncident = {
-      ...event.body,
+      ...jsonBody,
       incidentId: Date.now().toString(),
       expiryPeriod: expiryDate, // specify TTL
     };
@@ -31,8 +38,11 @@ module.exports.handler = async (event, context) => {
     // return the created object
     return {statusCode: 200,body: JSON.stringify(newIncident), 
     };
-  } else {
-    // if password is incorrect - return error
-    return {statusCode: 500,body: '{"error":"Invalid Request"}'} 
   }
+    // if event structure or password is incorrect - return error
+    return {statusCode: 500,body: '{"error":"Invalid Request"}'}
+
+    // The line below is useful for dumping out everything that in the event object - including the body
+    // return {statusCode: 500,body: '{"error":"Invalid Request", "details":"' + util.inspect(event, false, null, false).replace(/"/g, "~").replace(/'/g, "~") + '"}'} 
+}
 };

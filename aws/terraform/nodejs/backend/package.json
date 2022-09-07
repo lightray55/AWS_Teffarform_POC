@@ -2,7 +2,7 @@
   "name": "incident_tracker",
   "version": "1.0.0",
   "description": "Simple CRUD backend using DynamoDB",
-  "main": "index.js",
+  "main": "create.js",
   "scripts": {
     "test": "npm run test"
   },
