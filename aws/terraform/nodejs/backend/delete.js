@@ -17,10 +17,17 @@ module.exports.handler = async (event, context) => {
              
         return {
           statusCode: 200,
-          body: JSON.stringify({ message: "Item Deleted" })
+          body: JSON.stringify({ message: "Item Deleted" }),
+          headers: {
+            'Access-Control-Allow-Origin' : '*'
+          }
         }
     } else {
         // if password is incorrect - return error
-        return {statusCode: 500,body: '{"error":"Invalid Request"}'} 
+        return {statusCode: 500,body: '{"error":"Invalid Request"}',
+          headers : {
+            'Access-Control-Allow-Origin' : '*'
+          }
+        } 
     }
 };

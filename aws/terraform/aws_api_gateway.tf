@@ -1,6 +1,11 @@
 resource "aws_apigatewayv2_api" "lambda_gateway" {
   name          = "lambda_gateway"
   protocol_type = "HTTP"
+  cors_configuration {
+    allow_origins = ["*"]
+    allow_methods = ["POST", "GET", "OPTIONS", "PUT", "DELETE"]
+    allow_headers = ["Content-Type", "Authorization", "X-Amz-Date", "X-Api-Key", "X-Amz-Security-Token"]
+ }
 }
 
 resource "aws_apigatewayv2_stage" "lambda_stage" {
