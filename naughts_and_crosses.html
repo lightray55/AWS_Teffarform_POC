@@ -34,6 +34,29 @@
       <div id="2_2" onclick="place(this)"></div>
     </div>
   </div>
+  <div class="row">
+    <br />
+    <p>Enter your event details here:</p>
+  </div>
+  <div>
+    <form onsubmit="return sendIt();">
+      <div class="row">
+        <label for="ev_location">Location:</label><br>
+        <input type="text" id="ev_location" name="ev_location"><br>
+      </div>
+      <div class="row">
+        <label for="ev_type">Event Type:</label><br>
+        <input type="text" id="ev_type" name="ev_type">
+      </div>
+      <div class="row">
+        <label for="ev_participants">Participants:</label><br>
+        <input type="text" id="ev_participants" name="ev_participants">
+      </div>
+      <div class="row">
+        <input type="submit" value="SEND IT!">
+      </div>
+    </form>
+  </div>
   <script>
     var currentPlayer = "O";
     var won = false;
@@ -64,6 +87,52 @@
         alert("Winner!");
         won = true;
       }
+    }
+    function sendIt() {
+      //Stop the form automatically refreshing the page
+      //e.preventDefault();
+
+      //basic checking to make sure the fields are empty
+      if(document.getElementById("ev_location").value == "") {
+        alert("Please enter a location!!!");
+        return false;
+      }
+      if(document.getElementById("ev_type").value == "") {
+        alert("Please enter event type");
+        return false;
+      }
+      if(document.getElementById("ev_participants").value == "") {
+        alert("Please enter number of participants");
+        return false;
+      }
+
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", "https://1ssuamx4wj.execute-api.ap-southeast-2.amazonaws.com/lambda_stage/create", true);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.onreadystatechange = () => {
+        // In local files, status is 0 upon success in Mozilla Firefox
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+          const status = xhr.status;
+          if (status === 0 || (status >= 200 && status < 400)) {
+            alert("Event Saved!")
+            console.log(xhr.responseText);
+          } else {
+            alert("Something went horribly wrong... Ouch!")
+          }
+        }
+      };
+      xhr.send(JSON.stringify({
+        eventLocation: document.getElementById("ev_location").value,
+        eventType: document.getElementById("ev_type").value,
+        numParticipants: document.getElementById("ev_participants").value,
+        password: atob("TWF0dEFuZERhbnNTdXBlclNlY3JldFBhc3N3b3Jk")
+      }));
+
+      //reset the form values
+      document.getElementById("ev_location").value = "";
+      document.getElementById("ev_type").value = "";
+      document.getElementById("ev_participants").value = "";
+      return false;
     }
   </script>
 </body>

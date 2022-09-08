@@ -36,11 +36,18 @@ if (event.hasOwnProperty('body')) {
     .promise();
         
     // return the created object
-    return {statusCode: 200,body: JSON.stringify(newIncident), 
+    return {statusCode: 200,body: JSON.stringify(newIncident),
+      headers : {
+        'Access-Control-Allow-Origin' : '*'
+      }
     };
   }
     // if event structure or password is incorrect - return error
-    return {statusCode: 500,body: '{"error":"Invalid Request"}'}
+    return {statusCode: 500,body: '{"error":"Invalid Request"}',
+      headers : {
+        'Access-Control-Allow-Origin' : '*'
+      }
+    }
 
     // The line below is useful for dumping out everything that in the event object - including the body
     // return {statusCode: 500,body: '{"error":"Invalid Request", "details":"' + util.inspect(event, false, null, false).replace(/"/g, "~").replace(/'/g, "~") + '"}'} 
