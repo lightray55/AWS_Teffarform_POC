@@ -33,6 +33,21 @@ resource "aws_apigatewayv2_stage" "lambda_stage" {
   }
 }
 
+resource "aws_apigatewayv2_integration" "delete" {
+  api_id = aws_apigatewayv2_api.lambda_gateway.id
+
+  integration_uri    = aws_lambda_function.delete_incident.invoke_arn
+  integration_type   = "AWS_PROXY"
+  integration_method = "POST"
+}
+
+resource "aws_apigatewayv2_route" "delete" {
+  api_id = aws_apigatewayv2_api.lambda_gateway.id
+
+  route_key = "POST /delete"
+  target    = "integrations/${aws_apigatewayv2_integration.delete.id}"
+}
+
 resource "aws_apigatewayv2_integration" "create" {
   api_id = aws_apigatewayv2_api.lambda_gateway.id
 
