@@ -56,6 +56,20 @@
         <input type="submit" value="SEND IT!">
       </div>
     </form>
+  <div class="row">
+    <br />
+    <p>Enter ID of Incident to delete:</p>
+  </div>
+  <div>
+    <form onsubmit="return removeItem();"> 
+      <div class="row">
+        <label for="incident_id">Incident ID:</label><br>
+        <input type="text" id="incident_id" name="incident_id">
+      </div>
+      <div class="row">
+        <input type="submit" value="DELETE IT!">
+      </div>
+    </form>   
   </div>
   <script>
     var currentPlayer = "O";
@@ -132,6 +146,41 @@
       document.getElementById("ev_location").value = "";
       document.getElementById("ev_type").value = "";
       document.getElementById("ev_participants").value = "";
+      return false;
+    }
+
+    function removeItem() {
+      //Stop the form automatically refreshing the page
+      //e.preventDefault();
+
+      //basic checking to make sure the fields are empty
+      if(document.getElementById("incident_id").value == "") {
+        alert("Please enter a ID!!!");
+        return false;
+      }
+
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", "https://1ssuamx4wj.execute-api.ap-southeast-2.amazonaws.com/lambda_stage/delete", true);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.onreadystatechange = () => {
+        // In local files, status is 0 upon success in Mozilla Firefox
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+          const status = xhr.status;
+          if (status === 0 || (status >= 200 && status < 400)) {
+            alert("Event Saved!")
+            console.log(xhr.responseText);
+          } else {
+            alert("Something went horribly wrong... Ouch!")
+          }
+        }
+      };
+      xhr.send(JSON.stringify({
+        incidentId: document.getElementById("incident_id").value,
+        password: atob("TWF0dEFuZERhbnNTdXBlclNlY3JldFBhc3N3b3Jk")
+      }));
+
+      //reset the form values
+      document.getElementById("incident_id").value = "";
       return false;
     }
   </script>

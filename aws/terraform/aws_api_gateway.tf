@@ -77,3 +77,12 @@ resource "aws_lambda_permission" "api_permission" {
 
   source_arn = "${aws_apigatewayv2_api.lambda_gateway.execution_arn}/*/*"
 }
+
+resource "aws_lambda_permission" "delete_api_permission" {
+  statement_id  = "AllowExecutionFromAPIGateway"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.delete_incident.function_name
+  principal     = "apigateway.amazonaws.com"
+
+  source_arn = "${aws_apigatewayv2_api.lambda_gateway.execution_arn}/*/*"
+}

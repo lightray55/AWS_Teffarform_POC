@@ -5,8 +5,14 @@ const documentClient = new AWS.DynamoDB.DocumentClient();
 
 module.exports.handler = async (event, context) => {
     //check incidentId is specified 
-    if(event.body.hasOwnProperty('incidentId')) {
-        const id = event.body.incidentId;
+    var jsonBody = event.body
+    if(event.body.constructor == String) {
+      jsonBody = JSON.parse(event.body)
+    }
+    if(jsonBody.hasOwnProperty('incidentId')) {
+        
+
+        const id = jsonBody.incidentId;
         await documentClient
           .delete({
             TableName: INCIDENT_TABLE,
