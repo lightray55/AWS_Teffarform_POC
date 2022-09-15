@@ -1,4 +1,4 @@
-const util = require('util') // Useful functions
+const util = require('util'); // Useful functions
 const AWS = require("aws-sdk"); // using the SDK
 const INCIDENT_TABLE = "tf-incident-table"; // obtaining the table name
 
