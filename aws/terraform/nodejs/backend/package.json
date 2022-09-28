@@ -4,7 +4,7 @@
   "description": "Simple CRUD backend using DynamoDB",
   "main": "create.js",
   "scripts": {
-    "test": "npm run test"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -15,5 +15,11 @@
   "bugs": {
     "url": "https://github.com/sourcedrink/WorkProject/issues"
   },
-  "homepage": "https://github.com/sourcedrink/WorkProject#readme"
+  "homepage": "https://github.com/sourcedrink/WorkProject#readme",
+  "devDependencies": {
+    "jest": "^29.0.3"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.1216.0"
+  }
 }

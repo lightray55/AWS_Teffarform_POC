@@ -28,4 +28,5 @@ resource "aws_dynamodb_table" "tf_incident_db" {
     enabled = true 
     attribute_name = "expiryDate" 
   }
+  
 }
