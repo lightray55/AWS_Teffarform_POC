@@ -1,0 +1,35 @@
+name: 'Test Runner'
+
+# **What it does**: Runs unit tests whenever someone creates a PR.
+# **Why we have it**: To give developers feedback if they have broken anything.
+# **Who does it impact**: developers and testers.
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions:
+  contents: read
+  pull-requests: read
+
+# This allows a subsequently queued workflow run to interrupt previous runs
+concurrency:
+  group: '${{ github.workflow }} @ ${{ github.event.pull_request.head.label || github.head_ref || github.ref }}'
+  cancel-in-progress: true
+
+jobs:
+  run-tests-on-linux:
+    name: "Run Jest tests on Linux"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - name: Install node modules
+        working-directory: ./aws/terraform/nodejs/backend
+        run: |
+          npm install --save-dev jest
+          npm test
