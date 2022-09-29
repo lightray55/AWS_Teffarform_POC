@@ -6,9 +6,9 @@ name: 'Test Runner'
 
 on:
   push:
-    branches:
-      - main
+    branches: [ "main" ]
   pull_request:
+    branches: [ "main" ]
   workflow_dispatch:
 
 permissions:
@@ -21,8 +21,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  run-tests-on-linux:
-    name: "Run Jest tests on Linux"
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
