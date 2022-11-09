@@ -6,23 +6,17 @@ name: 'Test Runner'
 
 on:
   push:
-    branches:
-      - main
+    branches: [ "main" ]
   pull_request:
+    branches: [ "main" ]
   workflow_dispatch:
 
 permissions:
   contents: read
   pull-requests: read
 
-# This allows a subsequently queued workflow run to interrupt previous runs
-concurrency:
-  group: '${{ github.workflow }} @ ${{ github.event.pull_request.head.label || github.head_ref || github.ref }}'
-  cancel-in-progress: true
-
 jobs:
-  run-tests-on-linux:
-    name: "Run Jest tests on Linux"
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
